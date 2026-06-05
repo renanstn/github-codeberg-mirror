@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+WORKDIR="./mirrors"
+
+mkdir -p "$WORKDIR"
+
 echo "Fetching GitHub repositories..."
 
 github_repos="[]"
@@ -66,21 +70,20 @@ for ((i=0; i<repo_count; i++)); do
 
         echo "Repository not found on Codeberg. Creating..."
 
-        create_response=$(
-            curl -s \
-                -X POST \
-                -H "Authorization: token $CODEBERG_TOKEN" \
-                -H "Content-Type: application/json" \
-                https://codeberg.org/api/v1/user/repos \
-                -d "$(jq -n \
-                    --arg name "$repo_name" \
-                    --argjson private "$repo_private" \
-                    '{
-                        name: $name,
-                        private: $private
-                    }')"
-        )
+        curl -s \
+            -X POST \
+            -H "Authorization: token $CODEBERG_TOKEN" \
+            -H "Content-Type: application/json" \
+            https://codeberg.org/api/v1/user/repos \
+            -d "$(jq -n \
+                --arg name "$repo_name" \
+                --argjson private "$repo_private" \
+                '{
+                    name: $name,
+                    private: $private
+                }')"
 
+        echo
         echo "Repository created successfully."
 
     else
@@ -89,14 +92,7 @@ for ((i=0; i<repo_count; i++)); do
 
     fi
 
-    temp_dir=$(mktemp -d)
-    mirror_path="$temp_dir/${repo_name}.git"
-
-    cleanup() {
-        rm -rf "$temp_dir"
-    }
-
-    trap cleanup RETURN
+    mirror_path="$WORKDIR/${repo_name}.git"
 
     echo "Cloning mirror from GitHub..."
 
@@ -116,9 +112,6 @@ for ((i=0; i<repo_count; i++)); do
     echo "Repository synchronized successfully."
 
     cd - >/dev/null
-
-    rm -rf "$temp_dir"
-    trap - RETURN
 
 done
 
