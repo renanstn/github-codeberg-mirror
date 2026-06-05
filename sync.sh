@@ -3,7 +3,6 @@
 set -euo pipefail
 
 WORKDIR="./mirrors"
-
 mkdir -p "$WORKDIR"
 
 echo "Fetching GitHub repositories..."
@@ -12,13 +11,11 @@ github_repos="[]"
 page=1
 
 while true; do
-
     current_page=$(
         curl -s \
             -H "Authorization: Bearer $GITHUB_TOKEN" \
             "https://api.github.com/user/repos?per_page=100&type=owner&page=$page"
     )
-
     current_count=$(echo "$current_page" | jq length)
 
     if [[ "$current_count" -eq 0 ]]; then
@@ -32,9 +29,7 @@ while true; do
     )
 
     echo "Fetched GitHub page $page ($current_count repositories)"
-
     ((page++))
-
 done
 
 echo "Fetching Codeberg repositories..."
@@ -52,14 +47,10 @@ echo "Found $repo_count GitHub repositories."
 echo "Found $codeberg_repo_count Codeberg repositories."
 
 for ((i=0; i<repo_count; i++)); do
-
     repo_name=$(echo "$github_repos" | jq -r ".[$i].name")
     repo_private=$(echo "$github_repos" | jq -r ".[$i].private")
 
-    echo
-    echo "================================="
     echo "Processing repository: $repo_name"
-    echo "================================="
 
     exists_in_codeberg=$(
         echo "$codeberg_repos" |
@@ -69,7 +60,6 @@ for ((i=0; i<repo_count; i++)); do
     )
 
     if [[ -z "$exists_in_codeberg" ]]; then
-
         echo "Repository not found on Codeberg. Creating..."
 
         curl -s \
@@ -85,13 +75,9 @@ for ((i=0; i<repo_count; i++)); do
                     private: $private
                 }')"
 
-        echo
         echo "Repository created successfully."
-
     else
-
         echo "Repository already exists on Codeberg."
-
     fi
 
     mirror_path="$WORKDIR/${repo_name}.git"
@@ -108,13 +94,10 @@ for ((i=0; i<repo_count; i++)); do
         "https://${CODEBERG_USER}:${CODEBERG_TOKEN}@codeberg.org/${CODEBERG_USER}/${repo_name}.git"
 
     echo "Pushing mirror to Codeberg..."
-
     git push --mirror codeberg
 
     echo "Repository synchronized successfully."
-
     cd - >/dev/null
-
 done
 
 echo
