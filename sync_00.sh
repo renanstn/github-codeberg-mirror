@@ -44,6 +44,7 @@ codeberg_repos=$(
         -H "Authorization: token $CODEBERG_TOKEN" \
         "https://codeberg.org/api/v1/user/repos?limit=1000"
 )
+echo "$codeberg_repos" | jq .
 
 repo_count=$(echo "$github_repos" | jq length)
 codeberg_repo_count=$(echo "$codeberg_repos" | jq length)
