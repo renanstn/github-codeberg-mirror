@@ -1,0 +1,15 @@
+name: Sync Mirrors
+
+on:
+  # schedule:
+    # - cron: '0 * * * *'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run sync script
+        run: ./sync.sh
