@@ -1,7 +1,7 @@
 name: Sync Mirrors
 
 on:
-  # schedule:
+  schedule:
     # - cron: '0 * * * *'
 
 jobs:
