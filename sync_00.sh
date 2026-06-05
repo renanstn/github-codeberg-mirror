@@ -112,6 +112,9 @@ for ((i=0; i<repo_count; i++)); do
     # git push --mirror codeberg
 
     echo "Repository synchronized successfully."
+
+    cd - >/dev/null
+
 done
 
 echo
