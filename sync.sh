@@ -46,8 +46,10 @@ codeberg_repos=$(
 )
 
 repo_count=$(echo "$github_repos" | jq length)
+codeberg_repo_count=$(echo "$codeberg_repos" | jq length)
 
 echo "Found $repo_count GitHub repositories."
+echo "Found $codeberg_repo_count Codeberg repositories."
 
 for ((i=0; i<repo_count; i++)); do
 
