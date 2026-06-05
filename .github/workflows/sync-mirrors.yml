@@ -2,14 +2,30 @@ name: Sync Mirrors
 
 on:
   schedule:
-    # - cron: '0 * * * *'
+    # Daily at 03:00 UTC
+    # - cron: '0 3 * * *'
+
+  workflow_dispatch:
 
 jobs:
   sync:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
 
       - name: Run sync script
-        run: ./sync.sh
+        env:
+          GITHUB_USER: ${{ vars.GITHUB_USER }}
+          CODEBERG_USER: ${{ vars.CODEBERG_USER }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+        run: |
+          chmod +x sync.sh
+          ./sync.sh
