@@ -50,3 +50,4 @@ codeberg_repo_count=$(echo "$codeberg_repos" | jq length)
 
 echo "Found $repo_count GitHub repositories."
 echo "Found $codeberg_repo_count Codeberg repositories."
+echo "$codeberg_repos" | jq -r '.[].name'
