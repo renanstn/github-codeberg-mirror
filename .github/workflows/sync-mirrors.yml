@@ -23,9 +23,9 @@ jobs:
       - name: Run sync script
         env:
           GITHUB_USER: ${{ vars.GITHUB_USER }}
-          CODEBERG_USER: ${{ vars.CODEBERG_USER }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CODEBERG_USER: ${{ secrets.CODEBERG_USER }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
         run: |
-          chmod +x sync.sh
-          ./sync.sh
+          chmod +x sync_00.sh
+          ./sync_00.sh
