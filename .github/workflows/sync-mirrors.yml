@@ -18,7 +18,7 @@ jobs:
 
       - name: Run sync script
         env:
-          GITHUB_USER: ${{ vars.GITHUB_USER }}
+          GITHUB_USER: ${{ vars.GH_USER }}
           CODEBERG_USER: ${{ vars.CODEBERG_USER }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
