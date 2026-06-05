@@ -37,4 +37,16 @@ while true; do
 
 done
 
+echo "Fetching Codeberg repositories..."
+
+codeberg_repos=$(
+    curl -s \
+        -H "Authorization: token $CODEBERG_TOKEN" \
+        "https://codeberg.org/api/v1/user/repos?limit=1000"
+)
+
+repo_count=$(echo "$github_repos" | jq length)
+
+echo "Found $repo_count GitHub repositories."
+
 echo "Finished."
