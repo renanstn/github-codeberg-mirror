@@ -23,5 +23,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
         run: |
-          chmod +x sync_00.sh
-          ./sync_00.sh
+          chmod +x sync.sh
+          ./sync.sh
