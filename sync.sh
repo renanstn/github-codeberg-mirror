@@ -88,6 +88,15 @@ for ((i=0; i<repo_count; i++)); do
         "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${repo_name}.git" \
         "$mirror_path"
 
+    echo "Removing GitHub pull request refs..."
+
+    git -C "$mirror_path" for-each-ref \
+        --format='%(refname)' \
+        refs/pull |
+    while read -r ref; do
+        git -C "$mirror_path" update-ref -d "$ref"
+    done
+
     cd "$mirror_path"
 
     git remote add codeberg \
